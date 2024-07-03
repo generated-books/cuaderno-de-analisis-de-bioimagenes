@@ -1,0 +1,2 @@
+# Simulación de datos
+Para explorar algoritmos de procesamiento de imágenes y, en particular, para medir cuán buenos son para resolver las tareas para las que fueron creados, tiene mucho sentido simular conjuntos de datos. En este capítulo simularemos imágenes de células, membranas y núcleos, y daremos ejemplos de cómo estos pueden ayudarnos a comprender mejor lo que realmente hacen los algoritmos.

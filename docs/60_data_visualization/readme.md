@@ -1,0 +1,3 @@
+# Visualización de datos
+
+Después de extraer, graficar y analizar las mediciones de características utilizando estadísticas descriptivas, la visualización de las mediciones en el sistema de coordenadas y el espacio de la imagen original puede ser útil para comprender mejor la organización espacial de células y tejidos. En este capítulo aprenderemos métodos para visualizar las mediciones en el mismo espacio que nuestros datos originales, como superposiciones y comparaciones lado a lado.
