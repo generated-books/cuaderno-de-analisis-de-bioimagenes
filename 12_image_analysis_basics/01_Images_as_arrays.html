@@ -1,0 +1,1736 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>Las imágenes son matrices de números &#8212; Bio-image Analysis Notebooks</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=796348d33e8b1d947c94" rel="stylesheet">
+<link href="../_static/styles/bootstrap.css?digest=796348d33e8b1d947c94" rel="stylesheet">
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=796348d33e8b1d947c94" rel="stylesheet">
+
+  
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=796348d33e8b1d947c94" rel="stylesheet">
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2">
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2">
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2">
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=4ec06e9971c5264fbd345897d5258098f11cc577" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=796348d33e8b1d947c94">
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=796348d33e8b1d947c94">
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?digest=8bf782fb4ee92b3d3646425e50f299c4e1fd152d"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '12_image_analysis_basics/01_Images_as_arrays';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Trabajando con imágenes" href="02_Opening_visualizing_images.html" />
+    <link rel="prev" title="Fundamentos del análisis de imágenes" href="readme.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="docsearch:language" content="en">
+  </head>
+  
+  
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="180" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  
+  <input type="checkbox" class="sidebar-toggle" name="__primary" id="__primary">
+  <label class="overlay overlay-primary" for="__primary"></label>
+
+  
+  <input type="checkbox" class="sidebar-toggle" name="__secondary" id="__secondary">
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+      
+<form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+    </div>
+  </div>
+
+  
+  <nav class="bd-header navbar navbar-expand-lg bd-navbar" id="navbar-main"><div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+      <span class="fa-solid fa-bars"></span>
+  </label>
+  <div id="navbar-start">
+    
+    
+  
+
+
+<a class="navbar-brand logo" href="../intro.html">
+
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Logo image">
+    <img src="../_static/logo.png" class="logo__image only-dark" alt="Logo image">
+  
+  
+</a>
+    
+  </div>
+
+  
+  <div class="col-lg-9 navbar-header-items">
+    <div id="navbar-center" class="mr-auto">
+      
+      <div class="navbar-center-item">
+        <nav class="navbar-nav">
+    <p class="sidebar-header-items__title" role="heading" aria-level="1" aria-label="Site Navigation">
+        Site Navigation
+    </p>
+    <ul id="navbar-main-elements" class="navbar-nav">
+        
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../01_introduction/trailer.html">
+                        Avance: Análisis de bioimágenes con Python
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../01_introduction/readme.html">
+                        Configuración de tu computadora
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../02_python_basics/readme.html">
+                        Fundamentos de Python
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../04_sustainable_code/readme.html">
+                        Escribiendo código sustentable
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="readme.html">
+                        Fundamentos del análisis de imágenes
+                      </a>
+                    </li>
+                
+            <div class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    More
+                </button>
+                <div class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../12a_image_file_formats/readme.html">
+                        Formatos de archivos de imagen
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../12b_remote_files/readme.html">
+                        Archivos remotos
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../14_machine_learning_basics/readme.html">
+                        Fundamentos de aprendizaje automático
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../16_3d_image_visualization/readme.html">
+                        Visualización de imágenes en 3D
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../18_image_filtering/readme.html">
+                        Filtrado de imágenes
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../18a_deconvolution/readme.html">
+                        Deconvolución de imágenes
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../19_spatial_transforms/readme.html">
+                        Transformaciones espaciales
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../20_image_segmentation/readme.html">
+                        Segmentación de imágenes
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../20a_pixel_classification/readme.html">
+                        Aprendizaje automático para segmentación de imágenes
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../20b_deep_learning/readme.html">
+                        Segmentación de imágenes basada en aprendizaje profundo
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../20h_segmentation_post_processing/readme.html">
+                        Post-procesamiento de segmentación
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../23_blob_detection/readme.html">
+                        Detección de blobs
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../21_surface_processing/readme.html">
+                        Procesamiento de superficies
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../22_feature_extraction/readme.html">
+                        Extracción de características
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../25_neighborhood_relationships_between_cells/readme.html">
+                        Análisis de vecindario en tejidos
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../27_cell_classification/readme.html">
+                        Clasificación de células
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../28_colocalization/readme.html">
+                        Colocalización
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../29_algorithm_validation/readme.html">
+                        Validación de algoritmos
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../30_simulating_data/readme.html">
+                        Simulación de datos
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../03_advanced_python/readme.html">
+                        Programación avanzada en Python
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../15_gpu_acceleration/readme.html">
+                        Procesamiento de imágenes acelerado por GPU
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../31_graphical_user_interfaces/readme.html">
+                        Interfaces gráficas de usuario
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../32_tiled_image_processing/readme.html">
+                        Procesamiento de imágenes en mosaico
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../33_batch_processing/readme.html">
+                        Procesamiento por lotes
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../34_timelapse_analysis/readme.html">
+                        Análisis de lapso de tiempo
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../35_parameter_optimization/readme.html">
+                        Optimización de parámetros
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../70_workflows/readme.html">
+                        Automatización de flujos de trabajo
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../40_tabular_data_wrangling/readme.html">
+                        Manipulación de datos tabulares
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../40a_sql/readme.html">
+                        Consulta de bases de datos
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../41_descriptive_statistics/readme.html">
+                        Estadísticas descriptivas
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../47_clustering/readme.html">
+                        Agrupamiento
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../51_plotting/readme.html">
+                        Creación de gráficos
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../60_data_visualization/readme.html">
+                        Visualización de datos
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../01_introduction/glossary.html">
+                        Glosario
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../imprint.html">
+                        Imprint
+                      </a>
+                    </li>
+                
+                </div>
+            </div>
+            
+    </ul>
+</nav>
+      </div>
+      
+    </div>
+
+    <div id="navbar-end">
+      
+        <div class="navbar-end-item navbar-persistent--container">
+          
+<button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-toggle="tooltip">
+  <i class="fa-solid fa-magnifying-glass"></i>
+</button>
+        </div>
+      
+      
+      <div class="navbar-end-item">
+        <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+</button>
+      </div>
+      
+      <div class="navbar-end-item">
+        <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
+      </ul>
+      </div>
+      
+    </div>
+  </div>
+
+
+  
+  
+    <div class="navbar-persistent--mobile">
+<button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-toggle="tooltip">
+  <i class="fa-solid fa-magnifying-glass"></i>
+</button>
+    </div>
+  
+
+  
+  <label class="sidebar-toggle secondary-toggle" for="__secondary">
+      <span class="fa-solid fa-outdent"></span>
+  </label>
+  
+
+</div>
+  </nav>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+      
+      <div class="navbar-center-item">
+        <nav class="navbar-nav">
+    <p class="sidebar-header-items__title" role="heading" aria-level="1" aria-label="Site Navigation">
+        Site Navigation
+    </p>
+    <ul id="navbar-main-elements" class="navbar-nav">
+        
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../01_introduction/trailer.html">
+                        Avance: Análisis de bioimágenes con Python
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../01_introduction/readme.html">
+                        Configuración de tu computadora
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../02_python_basics/readme.html">
+                        Fundamentos de Python
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../04_sustainable_code/readme.html">
+                        Escribiendo código sustentable
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="readme.html">
+                        Fundamentos del análisis de imágenes
+                      </a>
+                    </li>
+                
+            <div class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    More
+                </button>
+                <div class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../12a_image_file_formats/readme.html">
+                        Formatos de archivos de imagen
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../12b_remote_files/readme.html">
+                        Archivos remotos
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../14_machine_learning_basics/readme.html">
+                        Fundamentos de aprendizaje automático
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../16_3d_image_visualization/readme.html">
+                        Visualización de imágenes en 3D
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../18_image_filtering/readme.html">
+                        Filtrado de imágenes
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../18a_deconvolution/readme.html">
+                        Deconvolución de imágenes
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../19_spatial_transforms/readme.html">
+                        Transformaciones espaciales
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../20_image_segmentation/readme.html">
+                        Segmentación de imágenes
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../20a_pixel_classification/readme.html">
+                        Aprendizaje automático para segmentación de imágenes
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../20b_deep_learning/readme.html">
+                        Segmentación de imágenes basada en aprendizaje profundo
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../20h_segmentation_post_processing/readme.html">
+                        Post-procesamiento de segmentación
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../23_blob_detection/readme.html">
+                        Detección de blobs
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../21_surface_processing/readme.html">
+                        Procesamiento de superficies
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../22_feature_extraction/readme.html">
+                        Extracción de características
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../25_neighborhood_relationships_between_cells/readme.html">
+                        Análisis de vecindario en tejidos
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../27_cell_classification/readme.html">
+                        Clasificación de células
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../28_colocalization/readme.html">
+                        Colocalización
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../29_algorithm_validation/readme.html">
+                        Validación de algoritmos
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../30_simulating_data/readme.html">
+                        Simulación de datos
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../03_advanced_python/readme.html">
+                        Programación avanzada en Python
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../15_gpu_acceleration/readme.html">
+                        Procesamiento de imágenes acelerado por GPU
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../31_graphical_user_interfaces/readme.html">
+                        Interfaces gráficas de usuario
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../32_tiled_image_processing/readme.html">
+                        Procesamiento de imágenes en mosaico
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../33_batch_processing/readme.html">
+                        Procesamiento por lotes
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../34_timelapse_analysis/readme.html">
+                        Análisis de lapso de tiempo
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../35_parameter_optimization/readme.html">
+                        Optimización de parámetros
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../70_workflows/readme.html">
+                        Automatización de flujos de trabajo
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../40_tabular_data_wrangling/readme.html">
+                        Manipulación de datos tabulares
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../40a_sql/readme.html">
+                        Consulta de bases de datos
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../41_descriptive_statistics/readme.html">
+                        Estadísticas descriptivas
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../47_clustering/readme.html">
+                        Agrupamiento
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../51_plotting/readme.html">
+                        Creación de gráficos
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../60_data_visualization/readme.html">
+                        Visualización de datos
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../01_introduction/glossary.html">
+                        Glosario
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../imprint.html">
+                        Imprint
+                      </a>
+                    </li>
+                
+                </div>
+            </div>
+            
+    </ul>
+</nav>
+      </div>
+      
+      </div>
+    
+
+    
+    
+    <div class="sidebar-header-items__end">
+      
+      <div class="navbar-end-item">
+        <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+</button>
+      </div>
+      
+      <div class="navbar-end-item">
+        <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
+      </ul>
+      </div>
+      
+    </div>
+    
+  </div>
+
+  
+  <div class="sidebar-start-items sidebar-primary__section">
+    <div class="sidebar-start-items__item">
+  
+
+
+<a class="navbar-brand logo" href="../intro.html">
+
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Logo image">
+    <img src="../_static/logo.png" class="logo__image only-dark" alt="Logo image">
+  
+  
+</a>
+    </div>
+    <div class="sidebar-start-items__item">
+<form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+    </div>
+    <div class="sidebar-start-items__item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../intro.html">
+                    Cuadernos de Análisis de Bioimágenes
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Basics</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../01_introduction/trailer.html">Avance: Análisis de bioimágenes con Python</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../01_introduction/readme.html">Configuración de tu computadora</a></li>
+
+<li class="toctree-l1 has-children"><a class="reference internal" href="../02_python_basics/readme.html">Fundamentos de Python</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../02_python_basics/01_our_first_juptyer_notebook.html">Código Python en cuadernos Jupyter</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../02_python_basics/02_Math_in_python.html">Matemáticas básicas en Python</a></li>
+
+
+<li class="toctree-l2"><a class="reference internal" href="../02_python_basics/03_Dont_try_this_at_home.html">Errores comunes al trabajar con cuadernos Jupyter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_python_basics/04_Basic_types.html">Tipos básicos en Python</a></li>
+
+
+<li class="toctree-l2"><a class="reference internal" href="../02_python_basics/05_lists_tuples.html">Listas y tuplas</a></li>
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../02_python_basics/05a_cropping_lists.html">Recortar listas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_python_basics/05b_sorting_lists.html">Ordenando listas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_python_basics/06_Dictionaries_and_tables.html">Diccionarios</a></li>
+
+
+<li class="toctree-l2"><a class="reference internal" href="../02_python_basics/07_Conditions.html">Condiciones</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_python_basics/08_loops.html">Bucles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_python_basics/09_custom_functions.html">Funciones</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_python_basics/10_Import_packages.html">Importando funciones y paquetes</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../04_sustainable_code/readme.html">Escribiendo código sustentable</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../04_sustainable_code/readable_code.html">Escribiendo buen código</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../04_sustainable_code/magic_numbers.html">Evitar números mágicos</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../04_sustainable_code/divide_and_rule.html">Dividir y conquistar</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../04_sustainable_code/dont_repeat_yourself.html">No te repitas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../04_sustainable_code/keep_it_short_and_simple.html">Manténlo corto y simple</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="readme.html">Fundamentos del análisis de imágenes</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Las imágenes son matrices de números</a></li>
+<li class="toctree-l2"><a class="reference internal" href="02_Opening_visualizing_images.html">Trabajando con imágenes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="brightness_and_contrast.html">Brillo y Contraste</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="03_Computing_with_images.html">Computación con imágenes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="04_Cropping_images.html">Recorte de imágenes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="05_Masking_images.html">Indexación de arrays numpy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="06_multi_channel_image_data.html">Datos de imagen multicanal</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../12a_image_file_formats/readme.html">Formatos de archivos de imagen</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../12a_image_file_formats/opening_images.html">Apertura de datos de imagen</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../12a_image_file_formats/opening_images_using_aicsimageio.html">Lectura de archivos con AICSImageIO</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../12a_image_file_formats/opening_czi_files.html">Abriendo archivos CZI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../12a_image_file_formats/opening_lif_files.html">Abriendo archivos LIF</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../12a_image_file_formats/opening_tif_folders.html">Carga de carpetas de archivos tif multicanal / multiposición</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../12a_image_file_formats/tiled_image_file_formats_zarr.html">Formatos de archivo de imagen en mosaico: zarr</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../12a_image_file_formats/image_file_formats.html">Ventajas y desventajas de los formatos de archivo de imagen</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../12b_remote_files/readme.html">Archivos remotos</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-5"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../12b_remote_files/nextcloud.html">Accediendo a archivos de imagen en nextcloud</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../12b_remote_files/exploring_bioimage_archive.html">Explorando el Archivo BioImage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../12b_remote_files/exploring_idr.html">Explorando el Recurso de Datos de Imágenes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../12b_remote_files/exploring_zenodo.html">Accediendo a metadatos en Zenodo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../12b_remote_files/exploring_doi.html">Lectura de metadatos desde DOI.org</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../14_machine_learning_basics/readme.html">Fundamentos de aprendizaje automático</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-6"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../14_machine_learning_basics/supervised_machine_learning.html">Aprendizaje automático supervisado</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../14_machine_learning_basics/unsupervised_machine_learning.html">Aprendizaje automático no supervisado</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../14_machine_learning_basics/scaling.html">Escalado</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../16_3d_image_visualization/readme.html">Visualización de imágenes en 3D</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-7"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../16_3d_image_visualization/10_nd_image_data.html">Pilas de imágenes multidimensionales</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../16_3d_image_visualization/inspecting_3d_images.html">Inspeccionando datos de imágenes 3D con pyclesperanto</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../16_3d_image_visualization/napari.html">Visualización interactiva de imágenes con napari</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../18_image_filtering/readme.html">Filtrado de imágenes</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-8"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../18_image_filtering/convolution.html">Convolución</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../18_image_filtering/02_noise_removal.html">Filtros de eliminación de ruido</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../18_image_filtering/03_background_removal.html">Filtros de eliminación de fondo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../18_image_filtering/divide_by_gaussian.html">División por Gaussiana</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../18_image_filtering/edge_detection_and_enhancement.html">Detección de bordes</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../18_image_filtering/simpleitk.html">Procesamiento de imágenes usando SimpleITK</a></li>
+
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../18a_deconvolution/readme.html">Deconvolución de imágenes</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-9"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../18a_deconvolution/introduction_deconvolution.html">Una introducción a la deconvolución de imágenes</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../18a_deconvolution/extract_psf.html">Determinación de la función de dispersión de punto a partir de una imagen de cuentas mediante promediado</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../18a_deconvolution/richardson_lucy_deconvolution.html">Deconvolución de Richardson-Lucy en GPUs compatibles con OpenCL</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../19_spatial_transforms/readme.html">Transformaciones espaciales</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-10"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../19_spatial_transforms/coordinate_systems.html">Sistemas de coordenadas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../19_spatial_transforms/cropping.html">Corte y recorte</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../19_spatial_transforms/scaling.html">Escalado</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../19_spatial_transforms/affine_transforms_scikit_image.html">Transformaciones afines usando scikit-image</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../19_spatial_transforms/affine_transforms_scipy.html">Transformaciones afines usando Scipy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../19_spatial_transforms/affine_transforms_cupy.html">Transformaciones afines usando cupy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../19_spatial_transforms/affine_transforms_clesperanto.html">Transformaciones afines usando clesperanto</a></li>
+
+
+<li class="toctree-l2"><a class="reference internal" href="../19_spatial_transforms/scaling_coordinate_lists.html">Escalando listas de coordenadas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../19_spatial_transforms/stitching_linear_blending.html">Unión de imágenes</a></li>
+</ul>
+</li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Image Segmentation</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../20_image_segmentation/readme.html">Segmentación de imágenes</a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-11"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../20_image_segmentation/06_Introduction_to_image_segmentation.html">Segmentación de imágenes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../20_image_segmentation/terminology.html">Terminología</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../20_image_segmentation/binarization.html">Binarización de Imágenes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../20_image_segmentation/07_Thresholding.html">Umbralización</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../20_image_segmentation/08a_split_touching_objects.html">Separar objetos que se tocan</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../20_image_segmentation/09_connected_component_labeling.html">Imágenes etiquetadas</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../20_image_segmentation/09a_gauss_otsu_labeling.html">Etiquetado Gauss-Otsu</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../20_image_segmentation/10_touching_objects_labeling.html">Etiquetado de objetos en contacto</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../20_image_segmentation/11_voronoi_otsu_labeling.html">Etiquetado Voronoi-Otsu</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../20_image_segmentation/voronoi_otsu_labeling_for_binary_images.html">Etiquetado Voronoi-Otsu en imágenes binarias</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../20_image_segmentation/11a_eroded_otsu_labeling.html">Etiquetado Otsu erosionado</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../20_image_segmentation/segmentation_2d_membranes.html">Watershed con semillas para segmentación celular basada en membranas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../20_image_segmentation/prevent_leaking_labels.html">Previniendo la fuga de etiquetas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../20_image_segmentation/Segmentation_3D.html">Segmentación de imágenes en 3D</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../20a_pixel_classification/readme.html">Aprendizaje automático para segmentación de imágenes</a><input class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-12"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../20a_pixel_classification/scikit_learn_random_forest_pixel_classifier.html">Clasificación de píxeles usando Scikit-learn</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../20a_pixel_classification/apoc_object_segmenter.html">Segmentación de objetos en GPUs compatibles con OpenCL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../20a_pixel_classification/apoc_pixel_classifier.html">Clasificación de píxeles en GPUs compatibles con OpenCL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../20a_pixel_classification/interactive_pixel_classification/readme.html">Clasificación interactiva de píxeles y segmentación de objetos en Napari</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../20a_pixel_classification/multichannel_images.html">Clasificación de píxeles en imágenes multicanal</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../20a_pixel_classification/apoc_probability_mapper.html">Mapas de probabilidad</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../20a_pixel_classification/apoc_train_on_folders.html">Entrenamiento de clasificadores de píxeles a partir de carpetas de imágenes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../20a_pixel_classification/feature_stacks.html">Generando pilas de características</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../20a_pixel_classification/selecting_features.html">Selección de características</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../20b_deep_learning/readme.html">Segmentación de imágenes basada en aprendizaje profundo</a><input class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-13"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../20b_deep_learning/cellpose.html">Segmentación de Imágenes con CellPose</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../20b_deep_learning/stardist.html">Segmentación de imágenes con StarDist</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../20h_segmentation_post_processing/readme.html">Post-procesamiento de segmentación</a><input class="toctree-checkbox" id="toctree-checkbox-14" name="toctree-checkbox-14" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-14"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../20h_segmentation_post_processing/morphological_operations.html">Postprocesamiento de imágenes binarias utilizando operaciones morfológicas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../20h_segmentation_post_processing/open_close_labels.html">Refinamiento de imagen de etiquetas</a></li>
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../20h_segmentation_post_processing/smooth_labels.html">Suavizado de etiquetas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../20h_segmentation_post_processing/splitting_touching_objects.html">Separación de objetos en contacto</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../20h_segmentation_post_processing/mode_filter.html">El filtro de moda para corregir resultados de segmentación semántica</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../20h_segmentation_post_processing/merge_labels.html">Fusión de etiquetas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../20h_segmentation_post_processing/merge_annotated_labels.html">Fusión de etiquetas anotadas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../20h_segmentation_post_processing/merging_labels_based_on_centroid_distance.html">Fusión de etiquetas según las distancias entre centroides</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../20h_segmentation_post_processing/merging_labels_based_on_edge_to_edge_distance.html">Fusión de etiquetas según las distancias de borde a borde</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../20h_segmentation_post_processing/merge_objects_using_machine_learning.html">Fusión de objetos utilizando aprendizaje automático</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../20h_segmentation_post_processing/remove_labels_on_image_edges.html">Eliminar etiquetas en los bordes de la imagen</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../20h_segmentation_post_processing/select_labels_based_on_size.html">Seleccionar etiquetas basadas en su tamaño</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../20h_segmentation_post_processing/select_labels.html">Seleccionar etiquetas usando aprendizaje automático</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../20h_segmentation_post_processing/identify_labels_touching_background.html">Identificación de etiquetas que tocan el fondo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../20h_segmentation_post_processing/erode_connected_labels.html">Modificación de los bordes de los tejidos</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../20h_segmentation_post_processing/sequential_labeling.html">Etiquetado secuencial de objetos (re-etiquetado)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../20h_segmentation_post_processing/label_edges.html">Bordes de etiquetas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../20h_segmentation_post_processing/inner_and_outer_cell_borders.html">Bordes celulares internos y externos</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../20h_segmentation_post_processing/refine_cell_segmentation.html">Postprocesamiento para segmentación celular basada en membranas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../20h_segmentation_post_processing/mimicking_imagej_watershed.html">Imitando el algoritmo watershed de ImageJ</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../23_blob_detection/readme.html">Detección de blobs</a><input class="toctree-checkbox" id="toctree-checkbox-15" name="toctree-checkbox-15" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-15"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../23_blob_detection/local_maxima_detection.html">Detección de máximos locales</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../23_blob_detection/blog_dog_log_doh.html">Detección de blobs</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../21_surface_processing/readme.html">Procesamiento de superficies</a><input class="toctree-checkbox" id="toctree-checkbox-16" name="toctree-checkbox-16" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-16"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../21_surface_processing/creating_surfaces.html">Creación de superficies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../21_surface_processing/visualizing_surfaces.html">Visualización de superficies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../21_surface_processing/saving_and_loading_surfaces.html">Guardando y cargando superficies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../21_surface_processing/smoothing_and_simplifying_surfaces.html">Suavizado y simplificación de superficies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../21_surface_processing/connected_component_labeling.html">Etiquetado de componentes conectados en superficies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../21_surface_processing/surfaces_and_point_clouds.html">Convirtiendo puntos y superficies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../21_surface_processing/surfaces_to_images.html">De datos de superficie a datos de imagen</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../21_surface_processing/tabular_quality_measurements.html">Mediciones de superficie</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../21_surface_processing/quality_measurements.html">Mediciones de calidad de superficie usando vedo en napari</a></li>
+</ul>
+</li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Quantitative analysis</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../22_feature_extraction/readme.html">Extracción de características</a><input class="toctree-checkbox" id="toctree-checkbox-17" name="toctree-checkbox-17" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-17"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../22_feature_extraction/quantitative_measurements.html">Análisis cuantitativo de imágenes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../22_feature_extraction/count_blobs.html">Conteo de objetos brillantes en imágenes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../22_feature_extraction/statistics_with_pyclesperanto.html">Estadísticas básicas con pyclesperanto</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../22_feature_extraction/statistics_with_scikit_image.html">Estadísticas usando Scikit-image</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../22_feature_extraction/statistics_with_nyxus.html">Estadísticas usando Nyxus</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../22_feature_extraction/comparison_of_measurements_from_different_libraries.html">Comparación de mediciones de diferentes bibliotecas</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../22_feature_extraction/measure_intensity_on_label_edges.html">Medición de intensidad en los bordes de etiquetas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../22_feature_extraction/intensities_along_lines.html">Estadísticas descriptivas de [muchas] líneas en una imagen</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../22_feature_extraction/shape_descriptors_based_on_neighborhood_graphs.html">Descriptores de forma basados en grafos de vecindad</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../22_feature_extraction/distance_features.html">Midiendo distancias entre objetos</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../22_feature_extraction/distance_from_center.html">Medir distancia a una línea central</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../25_neighborhood_relationships_between_cells/readme.html">Análisis de vecindario en tejidos</a><input class="toctree-checkbox" id="toctree-checkbox-18" name="toctree-checkbox-18" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-18"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../25_neighborhood_relationships_between_cells/01_neighborhood_definitions.html">Definiciones de vecindad</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../25_neighborhood_relationships_between_cells/05_count_touching_neighbors.html">Contar vecinos en contacto</a></li>
+
+
+<li class="toctree-l2"><a class="reference internal" href="../25_neighborhood_relationships_between_cells/regional_properties.html">Propiedades regionales de la etiqueta</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../25_neighborhood_relationships_between_cells/06_mesh_with_distances.html">Dibujar mallas de distancia entre vecinos</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../25_neighborhood_relationships_between_cells/distance_to_other_labels.html">Medir la distancia a células en otra imagen de etiquetas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../25_neighborhood_relationships_between_cells/other_proximal_labels_count.html">Contar etiquetas proximales en otra imagen de etiquetas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../25_neighborhood_relationships_between_cells/neighbor_meshes_in_3d.html">Mallas vecinas en tres dimensiones</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../25_neighborhood_relationships_between_cells/label_neighbor_filters.html">Filtros de etiquetas de vecinos</a></li>
+
+
+
+
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../27_cell_classification/readme.html">Clasificación de células</a><input class="toctree-checkbox" id="toctree-checkbox-19" name="toctree-checkbox-19" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-19"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../27_cell_classification/apoc_object_classifier.html">Clasificación de objetos en GPUs compatibles con OpenCL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../27_cell_classification/interactive_object_classification/readme.html">Clasificación interactiva de objetos en Napari</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../27_cell_classification/forest_statistics.html">Estadísticas de toma de decisiones del bosque aleatorio</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../27_cell_classification/apoc_simpleitk_object_classification.html">Clasificación de objetos con APOC y características basadas en SimpleITK</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../28_colocalization/readme.html">Colocalización</a><input class="toctree-checkbox" id="toctree-checkbox-20" name="toctree-checkbox-20" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-20"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../28_colocalization/differentiate_nuclei_intensity.html">Diferenciación de núcleos según la intensidad de la señal</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../29_algorithm_validation/readme.html">Validación de algoritmos</a><input class="toctree-checkbox" id="toctree-checkbox-21" name="toctree-checkbox-21" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-21"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../29_algorithm_validation/segmentation_quality_estimation.html">Mediciones de calidad de segmentación de imágenes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../29_algorithm_validation/scenario_otsu_segmentation.html">Escenario: Comparación de diferentes implementaciones del mismo algoritmo de umbralización</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../29_algorithm_validation/visual_comparison.html">Comparación visual de etiquetado</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../29_algorithm_validation/jaccard_index_versus_accuracy.html">Índice de Jaccard versus Precisión</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../30_simulating_data/readme.html">Simulación de datos</a><input class="toctree-checkbox" id="toctree-checkbox-22" name="toctree-checkbox-22" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-22"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../30_simulating_data/basic_simulation_noise_background_nuclei.html">Simulación de formación de imagen + restauración de imagen</a></li>
+</ul>
+</li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Advanced techniques</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../03_advanced_python/readme.html">Programación avanzada en Python</a><input class="toctree-checkbox" id="toctree-checkbox-23" name="toctree-checkbox-23" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-23"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../03_advanced_python/custom_libraries.html">Bibliotecas personalizadas</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../03_advanced_python/functional_parameters.html">Parámetros funcionales</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_advanced_python/partial.html">Funciones parciales</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_advanced_python/parallelization.html">Paralelización</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_advanced_python/numba.html">Paralelización usando numba</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../15_gpu_acceleration/readme.html">Procesamiento de imágenes acelerado por GPU</a><input class="toctree-checkbox" id="toctree-checkbox-24" name="toctree-checkbox-24" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-24"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../15_gpu_acceleration/clesperanto.html">clEsperanto</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../15_gpu_acceleration/why_GPU_acceleration.html">Por qué tiene sentido la aceleración por GPU</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../15_gpu_acceleration/memory_management.html">Rastreo del consumo de memoria</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../15_gpu_acceleration/further_reading.html">Lecturas adicionales</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../31_graphical_user_interfaces/readme.html">Interfaces gráficas de usuario</a><input class="toctree-checkbox" id="toctree-checkbox-25" name="toctree-checkbox-25" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-25"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../31_graphical_user_interfaces/napari.html">Visualización interactiva de imágenes con napari</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../31_graphical_user_interfaces/napari_magicgui.html">Ajuste interactivo de parámetros con napari y magicgui</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../31_graphical_user_interfaces/napari-skimage-regionprops.html">Visualización de propiedades de regiones en napari</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../31_graphical_user_interfaces/napari_dask.html">Morfometría del embrión de Tribolium a lo largo del tiempo en Napari</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../31_graphical_user_interfaces/napari_crop.html">Recorte interactivo con napari</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../32_tiled_image_processing/readme.html">Procesamiento de imágenes en mosaico</a><input class="toctree-checkbox" id="toctree-checkbox-26" name="toctree-checkbox-26" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-26"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../32_tiled_image_processing/tiled_nuclei_counting_quick.html">Procesamiento de imágenes en mosaico, una visión rápida</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../32_tiled_image_processing/tiling_images_naive_approach.html">Creación de mosaicos de imágenes - el enfoque ingenuo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../32_tiled_image_processing/tiling_images_with_overlap.html">Creación de mosaicos de imágenes con superposición</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../32_tiled_image_processing/tiled_connected_component_labeling.html">Etiquetado de componentes conectados en mosaicos</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../32_tiled_image_processing/tiled_object_measurements.html">Mediciones en objetos en imágenes en mosaico</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../32_tiled_image_processing/tiled_area_mapping.html">Mapear área de objetos en mosaicos</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../32_tiled_image_processing/tiled_nuclei_counting.html">Conteo de núcleos en mosaicos</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../33_batch_processing/readme.html">Procesamiento por lotes</a><input class="toctree-checkbox" id="toctree-checkbox-27" name="toctree-checkbox-27" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-27"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../33_batch_processing/12_process_folders.html">Cómo procesar archivos en una carpeta</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../33_batch_processing/14_process_timelapse.html">Procesamiento de datos de lapso de tiempo</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../34_timelapse_analysis/readme.html">Análisis de lapso de tiempo</a><input class="toctree-checkbox" id="toctree-checkbox-28" name="toctree-checkbox-28" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-28"><i class="fa-solid fa-chevron-down"></i></label><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../35_parameter_optimization/readme.html">Optimización de parámetros</a><input class="toctree-checkbox" id="toctree-checkbox-29" name="toctree-checkbox-29" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-29"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../35_parameter_optimization/optimization_basics.html">Fundamentos de optimización</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../35_parameter_optimization/label_image_optimizer.html">Optimizar algoritmos de segmentación</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../35_parameter_optimization/membrane_segmentation.html">Optimización de parámetros para la segmentación celular basada en imágenes de membrana</a></li>
+</ul>
+</li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Workflow automation</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../70_workflows/readme.html">Automatización de flujos de trabajo</a><input class="toctree-checkbox" id="toctree-checkbox-30" name="toctree-checkbox-30" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-30"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../70_workflows/napari-assistant.html">El Asistente de Napari</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../70_workflows/notebook_export.html">Generación de Cuadernos Jupyter desde el Asistente de Napari</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../70_workflows/napari_workflows.html">Flujos de trabajo en napari</a></li>
+</ul>
+</li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Tabular data, plots and statistics</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../40_tabular_data_wrangling/readme.html">Manipulación de datos tabulares</a><input class="toctree-checkbox" id="toctree-checkbox-31" name="toctree-checkbox-31" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-31"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../40_tabular_data_wrangling/introduction_dataframes.html">Introducción al trabajo con DataFrames</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../40_tabular_data_wrangling/explore_dataset.html">Explorando datos tabulares</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../40_tabular_data_wrangling/append_tables.html">Anexando tablas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../40_tabular_data_wrangling/select_rows_and_columns.html">Seleccionando filas y columnas en DataFrames de pandas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../40_tabular_data_wrangling/handling_NaNs.html">Manejo de valores NaN</a></li>
+
+
+<li class="toctree-l2"><a class="reference internal" href="../40_tabular_data_wrangling/summarizing_subsets.html">Resumiendo subconjuntos de datos</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../40_tabular_data_wrangling/pivot_tables.html">Tablas dinámicas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../40_tabular_data_wrangling/tidy_data.html">Datos Ordenados</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../40a_sql/readme.html">Consulta de bases de datos</a><input class="toctree-checkbox" id="toctree-checkbox-32" name="toctree-checkbox-32" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-32"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../40a_sql/select.html">Consulta de bases de datos usando SQL</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../40a_sql/join.html">Combinando tablas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../40a_sql/group_by.html">Resumiendo mediciones</a></li>
+
+
+
+
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../41_descriptive_statistics/readme.html">Estadísticas descriptivas</a><input class="toctree-checkbox" id="toctree-checkbox-33" name="toctree-checkbox-33" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-33"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../41_descriptive_statistics/basic_descriptive_statistics.html">Estadísticas descriptivas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../41_descriptive_statistics/descriptive_statistics_label_images.html">Estadísticas descriptivas de imágenes etiquetadas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../41_descriptive_statistics/Bland_altman_analysis.html">Comparación de métodos</a></li>
+
+
+<li class="toctree-l2"><a class="reference internal" href="../41_descriptive_statistics/bland_altman_on_folders_of_images.html">Análisis de Bland-Altman para comparar algoritmos de segmentación</a></li>
+
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../47_clustering/readme.html">Agrupamiento</a><input class="toctree-checkbox" id="toctree-checkbox-34" name="toctree-checkbox-34" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-34"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../47_clustering/interactive_dimensionality_reduction_and_clustering/readme.html">Reducción de dimensionalidad y agrupamiento interactivos</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../51_plotting/readme.html">Creación de gráficos</a><input class="toctree-checkbox" id="toctree-checkbox-35" name="toctree-checkbox-35" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-35"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../51_plotting/plotting_matplotlib.html">Trazado de gráficos con Matplotlib</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../51_plotting/plotting_seaborn.html">Introducción a Seaborn</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../51_plotting/plotting_distributions.html">Graficando Distribuciones con Seaborn</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../51_plotting/multivariate_views.html">Vistas multivariadas</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../60_data_visualization/readme.html">Visualización de datos</a><input class="toctree-checkbox" id="toctree-checkbox-36" name="toctree-checkbox-36" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-36"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../60_data_visualization/overlay_text_on_image.html">Superponer textos en imágenes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../60_data_visualization/quantitative_neighbor_maps.html">Mapas cuantitativos a partir de estadísticas de vecinos</a></li>
+
+</ul>
+</li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Appendix</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../01_introduction/glossary.html">Glosario</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../imprint.html">Imprint</a></li>
+
+</ul>
+
+    </div>
+</nav>
+    </div>
+  </div>
+  
+
+  
+  <div class="sidebar-end-items sidebar-primary__section">
+    <div class="sidebar-end-items__item">
+    </div>
+  </div>
+
+  
+  <div id="rtd-footer-container"></div>
+
+      </div>
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+        <div class="bd-content">
+          <div class="bd-article-container">
+            
+            <div class="bd-header-article">
+                
+
+
+
+<div class="col py-1 d-flex header-article-main">
+    <div class="header-article__left">
+        <label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" data-toggle="tooltip" data-placement="right" title="Toggle primary sidebar">
+            <span class="fa-solid fa-bars"></span>
+        </label>
+    </div>
+    <div class="header-article__right">
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+  </ul>
+</div>
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm"
+  data-toggle="tooltip"
+data-placement="bottom"
+title="Fullscreen mode"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<div class="dropdown dropdown-repository-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      <li><a href="https://github.com/haesleinhuepf/BioImageAnalysisNotebooks" target="_blank"
+   class="btn btn-sm dropdown-item"
+   data-toggle="tooltip"
+data-placement="left"
+title="Source repository"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">repository</span>
+</a>
+</a>
+      
+      <li><a href="https://github.com/haesleinhuepf/BioImageAnalysisNotebooks/issues/new?title=Issue%20on%20page%20%2F12_image_analysis_basics/01_Images_as_arrays.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm dropdown-item"
+   data-toggle="tooltip"
+data-placement="left"
+title="Open an issue"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">open issue</span>
+</a>
+</a>
+      
+  </ul>
+</div>
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      <li><a href="../_sources/12_image_analysis_basics/01_Images_as_arrays.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   data-toggle="tooltip"
+data-placement="left"
+title="Download source file"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</a>
+      
+      <li>
+<button onclick="printPdf(this)"
+  class="btn btn-sm dropdown-item"
+  data-toggle="tooltip"
+data-placement="left"
+title="Print to PDF"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</a>
+      
+  </ul>
+</div>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary" data-toggle="tooltip" data-placement="left" title="Toggle secondary sidebar">
+            <span class="fa-solid fa-list"></span>
+        </label>
+    </div>
+</div>
+            </div>
+            
+            
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Las imágenes son matrices de números</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#matrices-de-numpy">
+   Matrices de Numpy
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#dos-propiedades-importantes">
+   Dos propiedades importantes
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#otras-formas-de-crear-matrices">
+   Otras formas de crear matrices
+  </a>
+ </li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+
+            <article class="bd-article" role="main">
+              
+  <section class="tex2jax_ignore mathjax_ignore" id="las-imagenes-son-matrices-de-numeros">
+<h1>Las imágenes son matrices de números<a class="headerlink" href="#las-imagenes-son-matrices-de-numeros" title="Permalink to this heading">#</a></h1>
+<p><a class="reference external" href="https://numpy.org">Numpy</a> es una biblioteca para procesar listas multidimensionales de números, de las cuales las imágenes de microscopía (pilas, multicanal, lapsos de tiempo, etc.) son un ejemplo destacado. Aquí damos una introducción a esta biblioteca.</p>
+<p>Ver también</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://scipy-lectures.org/advanced/image_processing/index.html#basic-image">Manipulación y procesamiento de imágenes usando Numpy y Scipy por Emmanuelle Gouillart y Gaël Varoquaux</a></p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">import</span> <span class="n">imshow</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="matrices-de-numpy">
+<h2>Matrices de Numpy<a class="headerlink" href="#matrices-de-numpy" title="Permalink to this heading">#</a></h2>
+<p>Una imagen es simplemente una lista bidimensional de valores de píxeles, en otras palabras, una matriz, con un cierto número de filas y columnas. Por lo tanto, podemos definirla como una lista de listas, siendo cada lista una fila de píxeles:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">raw_image_array</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+    <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+    <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+    <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span>
+    <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+    <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+    <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+<span class="p">]</span>
+<span class="n">raw_image_array</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[[1, 0, 2, 1, 0, 0, 0],
+ [0, 3, 1, 0, 1, 0, 1],
+ [0, 5, 5, 1, 0, 1, 0],
+ [0, 6, 6, 5, 1, 0, 2],
+ [0, 0, 5, 6, 3, 0, 1],
+ [0, 1, 2, 1, 0, 0, 1],
+ [1, 0, 1, 0, 0, 1, 0]]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">imshow</span><span class="p">(</span><span class="n">raw_image_array</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.image.AxesImage at 0x1f9fbdb4b80&gt;
+</pre></div>
+</div>
+<img alt="../_images/33579b8adbd4882cc6a8cf342ee2d65b004107c04199c41a019e636cdd7d5fc6.png" src="../_images/33579b8adbd4882cc6a8cf342ee2d65b004107c04199c41a019e636cdd7d5fc6.png" />
+</div>
+</div>
+<p>Esta salida es casi la misma que la anterior con la diferencia de que ahora se indica que estamos tratando con una <code class="docutils literal notranslate"><span class="pre">array</span></code> de Numpy. Estas matrices de Numpy ahora pueden tratarse como una sola entidad y podemos realizar los cálculos que antes no podíamos:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">image</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">raw_image_array</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">image</span> <span class="o">-</span> <span class="mi">2</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[-1, -2,  0, -1, -2, -2, -2],
+       [-2,  1, -1, -2, -1, -2, -1],
+       [-2,  3,  3, -1, -2, -1, -2],
+       [-2,  4,  4,  3, -1, -2,  0],
+       [-2, -2,  3,  4,  1, -2, -1],
+       [-2, -1,  0, -1, -2, -2, -1],
+       [-1, -2, -1, -2, -2, -1, -2]])
+</pre></div>
+</div>
+</div>
+</div>
+<p>Ten en cuenta que estos cálculos son muy eficientes porque están <em>vectorizados</em>, es decir, en principio pueden realizarse en paralelo.</p>
+</section>
+<section id="dos-propiedades-importantes">
+<h2>Dos propiedades importantes<a class="headerlink" href="#dos-propiedades-importantes" title="Permalink to this heading">#</a></h2>
+<p>Las matrices como <code class="docutils literal notranslate"><span class="pre">image</span></code> tienen diferentes propiedades. Dos de las más importantes son:</p>
+<ul class="simple">
+<li><p>la <code class="docutils literal notranslate"><span class="pre">shape</span></code> de la matriz, es decir, el número de filas, columnas (y canales, planos, etc. para imágenes multidimensionales)</p></li>
+<li><p>el <code class="docutils literal notranslate"><span class="pre">dtype</span></code> de la matriz, es decir, una imagen de tipo <code class="docutils literal notranslate"><span class="pre">int64</span></code> tiene 2 elevado a la potencia de 64 valores de gris diferentes.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">image</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(7, 7)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">image</span><span class="o">.</span><span class="n">dtype</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>dtype(&#39;int32&#39;)
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="otras-formas-de-crear-matrices">
+<h2>Otras formas de crear matrices<a class="headerlink" href="#otras-formas-de-crear-matrices" title="Permalink to this heading">#</a></h2>
+<p>Cuando trabajamos con imágenes, a menudo creamos imágenes artificiales para ver qué hacen los filtros con ellas. Por ejemplo, podemos crear una imagen donde todos los píxeles tienen valor <code class="docutils literal notranslate"><span class="pre">0</span></code> excepto uno usando la función de Numpy <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.zeros.html"><code class="docutils literal notranslate"><span class="pre">np.zeros</span></code></a>. Requiere especificar un tamaño de imagen.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">image_size</span> <span class="o">=</span> <span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+
+<span class="n">image1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">image_size</span><span class="p">)</span>
+<span class="n">image1</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[0., 0., 0., 0., 0.],
+       [0., 0., 0., 0., 0.],
+       [0., 0., 0., 0., 0.],
+       [0., 0., 0., 0., 0.],
+       [0., 0., 0., 0., 0.],
+       [0., 0., 0., 0., 0.]])
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">imshow</span><span class="p">(</span><span class="n">image1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.image.AxesImage at 0x1f9fc000f10&gt;
+</pre></div>
+</div>
+<img alt="../_images/09ab260b13e1180841a9b181822ccdb5209c5d97e5dc706f824ab54453d51510.png" src="../_images/09ab260b13e1180841a9b181822ccdb5209c5d97e5dc706f824ab54453d51510.png" />
+</div>
+</div>
+<p>Como las imágenes son solo matrices, simplemente establecemos los valores de los píxeles como si estuviéramos accediendo a matrices. De esto también aprendes que el primer eje (coordenada 0) va de arriba a abajo mientras que el segundo eje (coordenada 3) va de izquierda a derecha.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">image1</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+
+<span class="n">imshow</span><span class="p">(</span><span class="n">image1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.image.AxesImage at 0x1f9fbe7ad90&gt;
+</pre></div>
+</div>
+<img alt="../_images/6c0bf2b62d8284502bf59c08097c2d117beb30ee0ab6ec71ee180f0b186cf857.png" src="../_images/6c0bf2b62d8284502bf59c08097c2d117beb30ee0ab6ec71ee180f0b186cf857.png" />
+</div>
+</div>
+<p>Para estudiar el ruido, podemos, por ejemplo, crear una imagen con valores aleatorios usando <a class="reference external" href="https://numpy.org/doc/stable/reference/random/generated/numpy.random.Generator.random.html#numpy.random.Generator.random"><code class="docutils literal notranslate"><span class="pre">np.random.random</span></code></a>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">image_random</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">((</span><span class="mi">6</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+<span class="n">imshow</span><span class="p">(</span><span class="n">image_random</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.image.AxesImage at 0x1f9fbef72e0&gt;
+</pre></div>
+</div>
+<img alt="../_images/285da33e574aa7a0a1b7dd67933652ded803861171b3da6713e7cb11154f2dae.png" src="../_images/285da33e574aa7a0a1b7dd67933652ded803861171b3da6713e7cb11154f2dae.png" />
+</div>
+</div>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./12_image_analysis_basics"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+            </article>
+            
+
+            
+            
+            <footer class="bd-footer-article">
+                <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+  <a class='left-prev' id="prev-link" href="readme.html" title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+          <p class="prev-next-subtitle">previous</p>
+          <p class="prev-next-title">Fundamentos del análisis de imágenes</p>
+      </div>
+  </a>
+  <a class='right-next' id="next-link" href="02_Opening_visualizing_images.html" title="next page">
+  <div class="prev-next-info">
+      <p class="prev-next-subtitle">next</p>
+      <p class="prev-next-title">Trabajando con imágenes</p>
+  </div>
+  <i class="fa-solid fa-angle-right"></i>
+  </a>
+</div>
+            </footer>
+            
+          </div>
+          
+          
+          
+            <div class="bd-sidebar-secondary bd-toc">
+              
+<div class="toc-item">
+  
+<div class="tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+</div>
+<nav id="bd-toc-nav" class="page-toc">
+    <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#matrices-de-numpy">
+   Matrices de Numpy
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#dos-propiedades-importantes">
+   Dos propiedades importantes
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#otras-formas-de-crear-matrices">
+   Otras formas de crear matrices
+  </a>
+ </li>
+</ul>
+
+</nav>
+</div>
+
+            </div>
+          
+          
+        </div>
+        <footer class="bd-footer-content">
+          <div class="bd-footer-content__inner">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Robert Haase, Guillaume Witz, Miguel Fernandes, Marcelo Leomil Zoccoler, Shannon Taylor, Mara Lampert, Till Korten & add-your-name-here-by-sending-a-pull-request-containing-a-notebook
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    <p class="last-updated">
+Last updated on None.<br>
+</p>
+  </div>
+  
+  <div class="footer-item">
+    
+<div class="extra_footer">
+  <p>
+Copyright: Licensed <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank">CC-BY 4.0</a> and <a href="https://github.com/haesleinhuepf/BioImageAnalysisNotebooks/blob/main/LICENSE-BSD3" target="_blank">BSD3</a> unless mentioned otherwise. 
+<a href="https://github.com/haesleinhuepf/BioImageAnalysisNotebooks/blob/main/CONTRIBUTING.md" target="_blank">Contribution and feedback welcome.</a>
+</p>
+
+</div>
+  </div>
+  
+</div>
+          </div>
+        </footer>
+        
+
+      </main>
+    </div>
+  </div>
+
+  
+    
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=796348d33e8b1d947c94"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=796348d33e8b1d947c94"></script>
+
+  </body>
+</html>
